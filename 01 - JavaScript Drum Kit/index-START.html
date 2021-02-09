@@ -58,7 +58,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-
+ // Best to keep the function seberate from the event listener. This way you can use this function again for other things. 
+ function playSound(e) {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    console.log(audio);
+    if (!audio) return; // stop the function from running if there is no audio 
+    audio.currentTime = 0; // Rewind to start
+    audio.play();
+    console.log(key);
+    key.classList.add('playing');
+ }
+ 
+ 
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; // skip if it not transformed. 
+    console.log(e.propertyName);
+    this.classList.remove('playing'); // This is whatever went against the event. 
+  }
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
 </script>
 
 
